@@ -324,11 +324,24 @@
       <button type="button" data-governorate="الوسطى">الوسطى</button>
     </div>
 
-    <div id="selectedGovernorate" class="selected-governorate" hidden>
-      <h3 id="selectedGovernorateName"></h3>
-      <p>تم اختيار المحافظة. الخطوة التالية هي ربطها بمحطتها وأسئلتها وأوسمتها في اللعبة.</p>
-    </div>
+    
+<div id="selectedGovernorate" class="selected-governorate" hidden>
+  <h3 id="selectedGovernorateName"></h3>
+  <p id="governorateIntro">استعد لاختبار معرفتك بهذه المحافظة.</p>
+  <button id="startGovernorateChallenge" class="primary-button" type="button">
+    ابدأ تحدي المحافظة 🧭
+  </button>
+  <div id="governorateQuiz" hidden>
+    <p id="governorateQuestion"></p>
+    <div id="governorateAnswers" class="governorate-selector"></div>
+    <p id="governorateFeedback" aria-live="polite"></p>
+    <button id="governorateNext" class="primary-button" type="button" hidden>
+      السؤال التالي
+    </button>
+    <p id="governorateScore"></p>
   </div>
+</div>
+
 </section>
 
       
