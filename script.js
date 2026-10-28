@@ -270,27 +270,6 @@ selectCharacter('explorer');
 updatePoints();
 updateProgress();
 
-// تفعيل بوابات الاستكشاف
-document.querySelectorAll('.gate-card, .portal-card, .explore-card').forEach(gate => {
-  gate.style.cursor = 'pointer';
-
-  gate.addEventListener('click', () => {
-    const title = gate.querySelector('h3, h2, .gate-title, .portal-title');
-    const name = title ? title.textContent.trim() : gate.textContent.trim();
-
-    const details = {
-      'التاريخ والحضارة': 'اكتشف القلاع والحصون والحكايات العُمانية العريقة.',
-      'المحافظات والمعالم': 'انطلق في رحلة عبر محافظات سلطنة عُمان ومعالمها.',
-      'الطبيعة والتراث': 'تعرّف على الجبال والأودية والشواطئ والتقاليد الأصيلة.',
-      'عُمان والمستقبل': 'اكتشف إنجازات عُمان وطموحاتها نحو المستقبل.'
-    };
-
-    const description = Object.entries(details).find(([key]) => name.includes(key));
-
-    alert((description ? description[1] : name) + '\n\nترقّب المزيد من المغامرات في هذه البوابة!');
-  });
-});
-
 
 /* تفعيل بوابات الاستكشاف في سراج عُمان */
 document.querySelectorAll('.discovery-card').forEach((gate) => {
