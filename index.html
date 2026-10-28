@@ -210,6 +210,43 @@
       </div>
     </section>
 
+
+<section id="historyChallenge" hidden style="max-width:800px;margin:30px auto;padding:24px;background:#fff;border-radius:20px;box-shadow:0 8px 28px #173b5420;text-align:center;color:#173b54">
+  <h2>🏛️ مغامرة التاريخ والحضارة</h2>
+  <p>اختبر معلوماتك عن تاريخ سلطنة عُمان، واجمع النقاط لفتح وسام المستكشف!</p>
+
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:20px">
+    <span>⭐ النقاط: <strong id="historyPoints">0</strong></span>
+    <span>❓ السؤال: <strong id="historyQuestionNumber">1</strong> من 5</span>
+  </div>
+
+  <h3 id="historyQuestion">استعد لبدء التحدي!</h3>
+  <div id="historyAnswers" style="display:grid;gap:12px;margin:20px auto;max-width:500px"></div>
+
+  <p id="historyFeedback" aria-live="polite"></p>
+
+  <button id="historyNext" type="button" hidden
+    style="padding:12px 24px;border:0;border-radius:12px;background:#087f8c;color:white;cursor:pointer">
+    السؤال التالي ←
+  </button>
+
+  <div id="historyResult" hidden>
+    <h3>🏅 اكتملت مغامرتك!</h3>
+    <p id="historyFinalScore"></p>
+    <p>أحسنت! واصل استكشاف عُمان ومعارفها.</p>
+    <button id="historyRestart" type="button"
+      style="padding:12px 24px;border:0;border-radius:12px;background:#173b54;color:white;cursor:pointer">
+      إعادة التحدي
+    </button>
+  </div>
+
+  <button id="historyClose" type="button"
+    style="margin-top:16px;padding:10px 20px;border:1px solid #ccd6df;border-radius:10px;background:white;cursor:pointer">
+    العودة إلى البوابات
+  </button>
+</section>
+
+    
     <section class="journey-banner">
       <span class="banner-icon">✨</span>
       <div>
