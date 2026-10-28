@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#082b46">
+  <meta name="description" content="سراج عُمان: رحلة تعليمية تفاعلية لاكتشاف تاريخ عُمان ومحافظاتها ومعالمها.">
+  <title>سِراج عُمان | من الموسوعة إلى المغامرة</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="العودة إلى الرئيسية">
+      <span class="brand-icon">✦</span>
+      <span>
+        <strong>سِراج عُمان</strong>
+        <small>من الموسوعة إلى المغامرة</small>
+      </span>
+    </a>
+
+    <div class="top-actions">
+      <span class="points-pill">⭐ <b id="headerPoints">٠</b> نقطة</span>
+      <button class="sound-button" id="helpButton" type="button">
+        كيف ألعب؟
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="homeScreen">
+      <div class="hero-content">
+        <span class="eyebrow">🇴🇲 مغامرتك تبدأ من هنا</span>
+        <h1>اكتشف عُمان،<br><span>واصنع مجد رحلتك!</span></h1>
+        <p>
+          انطلق في سباق المعرفة عبر أرض عُمان،
+          واجتز التحديات، واكتشف أسرار التاريخ والطبيعة والتراث.
+        </p>
+
+        <div class="hero-actions">
+          <button class="primary-button" id="startButton" type="button">
+            ابدأ المغامرة <span>←</span>
+          </button>
+          <button class="secondary-button" id="exploreButton" type="button">
+            اكتشف عُمان
+          </button>
+        </div>
+
+        <div class="hero-facts">
+          <div><strong>١١</strong><span>محافظة</span></div>
+          <div><strong>∞</strong><span>اكتشافات</span></div>
+          <div><strong>🏆</strong><span>تحديات</span></div>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-label="رسم رمزي لمغامرة في عُمان">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="sun-disc">☀</div>
+        <div class="mountain mountain-back"></div>
+        <div class="mountain mountain-front"></div>
+        <div class="fort">🏰</div>
+        <div class="palm">🌴</div>
+        <div class="traveler" aria-hidden="true">🧭</div>
+        <div class="floating-star star-one">✦</div>
+        <div class="floating-star star-two">✧</div>
+        <div class="art-caption">أرض التاريخ والمجد</div>
+      </div>
+    </section>
+
+    <section class="section-block" id="characterSection">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">اختر رفيق رحلتك</span>
+          <h2>من سيخوض المغامرة؟</h2>
+          <p>اختر الشخصية التي تمثلك في رحلة اكتشاف عُمان.</p>
+        </div>
+      </div>
+
+      <div class="character-grid">
+        <button class="character-card selected" data-character="explorer"
+                type="button" aria-pressed="true">
+          <span class="character-art">🧭</span>
+          <strong>المستكشف</strong>
+          <small>جاهز لاكتشاف المجهول</small>
+          <span class="selection-mark">✓</span>
+        </button>
+
+        <button class="character-card" data-character="discoverer"
+                type="button" aria-pressed="false">
+          <span class="character-art">🔭</span>
+          <strong>المكتشف</strong>
+          <small>شغوف بالمعرفة والأسرار</small>
+          <span class="selection-mark">✓</span>
+        </button>
+
+        <button class="character-card" data-character="robot"
+                type="button" aria-pressed="false">
+          <span class="character-art">🤖</span>
+          <strong>سراج الذكي</strong>
+          <small>رفيقك في تحديات المعرفة</small>
+          <span class="selection-mark">✓</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="section-block adventure-section" id="adventureSection">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">المرحلة الأولى</span>
+          <h2>🏁 سباق عُمان</h2>
+          <p>أجب عن الأسئلة، واجمع النقاط، وتقدم نحو خط النهاية.</p>
+        </div>
+        <span class="level-badge">المستوى ١</span>
+      </div>
+
+      <div class="game-panel" id="gamePanel">
+        <div class="race-track">
+          <div class="track-label">طريق المعرفة</div>
+          <div class="track-line">
+            <span class="track-start">🏁</span>
+            <span class="race-player" id="racePlayer">🧭</span>
+            <span class="track-finish">🏆</span>
+          </div>
+          <div class="track-progress">
+            <span id="progressBar"></span>
+          </div>
+          <div class="track-caption">
+            <span>نقطة الانطلاق</span>
+            <span id="progressText">٠٪</span>
+            <span>خط النهاية</span>
+          </div>
+        </div>
+
+        <div class="quiz-area" id="quizArea">
+          <div class="quiz-meta">
+            <span id="questionNumber">السؤال ١ من ٥</span>
+            <span class="points-pill">⭐ <b id="gamePoints">٠</b></span>
+          </div>
+
+          <h3 id="questionText">استعد للانطلاق!</h3>
+          <p id="questionHint">اضغط على زر البدء لتبدأ التحدي.</p>
+
+          <div class="answer-grid" id="answerOptions">
+            <button class="answer-option" type="button" disabled>الخيار الأول</button>
+            <button class="answer-option" type="button" disabled>الخيار الثاني</button>
+            <button class="answer-option" type="button" disabled>الخيار الثالث</button>
+            <button class="answer-option" type="button" disabled>الخيار الرابع</button>
+          </div>
+
+          <div id="feedback" class="feedback" aria-live="polite"></div>
+          <button class="primary-button quiz-next" id="nextButton" type="button" hidden>
+            السؤال التالي ←
+          </button>
+        </div>
+
+        <div class="result-area" id="resultArea" hidden>
+          <div class="result-icon">🏆</div>
+          <h3 id="resultTitle">أحسنت! أنهيت السباق</h3>
+          <p id="resultMessage">كل إجابة صحيحة تقربك من معرفة أوسع بعُمان.</p>
+          <div class="result-score">
+            <strong id="finalScore">٠</strong>
+            <span>نقطة</span>
+          </div>
+          <button class="primary-button" id="replayButton" type="button">
+            أعد المغامرة ↻
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block discovery-section" id="discoverySection">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">بوابات الاكتشاف</span>
+          <h2>عُمان حكايات لا تنتهي</h2>
+          <p>اختر مجالًا لتتعرف على جوانب مختلفة من الهوية العُمانية.</p>
+        </div>
+      </div>
+
+      <div class="discovery-grid">
+        <article class="discovery-card">
+          <span>🏛️</span>
+          <h3>التاريخ والحضارة</h3>
+          <p>رحلة بين القلاع والحصون والشواهد التاريخية.</p>
+          <span class="coming-label">بوابة قيد التطوير</span>
+        </article>
+
+        <article class="discovery-card">
+          <span>🗺️</span>
+          <h3>المحافظات والمعالم</h3>
+          <p>اكتشف تنوع عُمان من الجبال إلى السواحل.</p>
+          <span class="coming-label">بوابة قيد التطوير</span>
+        </article>
+
+        <article class="discovery-card">
+          <span>🌿</span>
+          <h3>الطبيعة والتراث</h3>
+          <p>تعرّف على البيئات الطبيعية والحرف والموروثات.</p>
+          <span class="coming-label">بوابة قيد التطوير</span>
+        </article>
+
+        <article class="discovery-card">
+          <span>🔬</span>
+          <h3>عُمان والمستقبل</h3>
+          <p>اكتشف الابتكار والعلوم والطموحات المستقبلية.</p>
+          <span class="coming-label">بوابة قيد التطوير</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="journey-banner">
+      <span class="banner-icon">✨</span>
+      <div>
+        <h2>كل تحدٍ يضيف إلى رحلتك</h2>
+        <p>اجمع المعرفة، وافتح الإنجازات، واصنع سجل مغامرتك.</p>
+      </div>
+      <span class="banner-badge">وسام سراج</span>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="brand footer-brand">
+      <span class="brand-icon">✦</span>
+      <span>
+        <strong>سِراج عُمان</strong>
+        <small>اكتشف المعرفة. خُض التحدي. اصنع الأثر.</small>
+      </span>
+    </div>
+    <p>مشروع تعليمي تفاعلي للتعريف بسلطنة عُمان وتراثها ومعالمها.</p>
+    <span>© سِراج عُمان</span>
+  </footer>
+
+  <dialog id="helpDialog" class="help-dialog">
+    <button class="dialog-close" id="closeHelp" type="button"
+            aria-label="إغلاق">×</button>
+    <h2>كيف تلعب؟</h2>
+    <ol>
+      <li>اختر الشخصية التي سترافقك.</li>
+      <li>ابدأ سباق عُمان واقرأ كل سؤال بعناية.</li>
+      <li>اختر إجابة واحدة من الخيارات المتاحة.</li>
+      <li>اجمع النقاط وتابع تقدمك حتى خط النهاية.</li>
+    </ol>
+    <p>المعرفة هي أعظم مكافأة في هذه الرحلة!</p>
+  </dialog>
+</body>
+</html>
