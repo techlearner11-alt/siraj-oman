@@ -353,3 +353,170 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
   });
 });
 
+
+/* ===== نظام تحديات التاريخ والحضارة ===== */
+(() => {
+  const challenge = document.getElementById('historyChallenge');
+  if (!challenge || challenge.dataset.initialized === 'true') return;
+  challenge.dataset.initialized = 'true';
+
+  const questions = [
+    {
+      q: 'ما اسم الحصن التاريخي الشهير في ولاية نزوى؟',
+      a: ['حصن نزوى', 'قلعة بهلاء', 'حصن جبرين'],
+      correct: 0,
+      info: 'حصن نزوى من أبرز المعالم التاريخية في سلطنة عُمان.'
+    },
+    {
+      q: 'أين تقع قلعة بهلاء التاريخية؟',
+      a: ['محافظة ظفار', 'محافظة الداخلية', 'محافظة مسندم'],
+      correct: 1,
+      info: 'تقع قلعة بهلاء في محافظة الداخلية، وهي مدرجة ضمن قائمة التراث العالمي.'
+    },
+    {
+      q: 'ما الوظيفة الأساسية لكثير من القلاع والحصون قديمًا؟',
+      a: ['الدفاع والحماية', 'إقامة السباقات', 'زراعة المحاصيل داخل الأبراج'],
+      correct: 0,
+      info: 'استُخدمت القلاع والحصون للدفاع والحماية ومراقبة المناطق والطرق.'
+    },
+    {
+      q: 'ما اسم السفينة العُمانية التقليدية التي ارتبطت بالتجارة البحرية؟',
+      a: ['المركب الجليدي', 'الداو', 'القطار'],
+      correct: 1,
+      info: 'ارتبطت السفن التقليدية المعروفة بالداو بالتجارة والملاحة البحرية في المنطقة.'
+    },
+    {
+      q: 'ما المدينة العُمانية المشهورة بصناعة الفخار؟',
+      a: ['بهلاء', 'خصب', 'صلالة'],
+      correct: 0,
+      info: 'تشتهر ولاية بهلاء بصناعة الفخار والحرف التقليدية.'
+    }
+  ];
+
+  const questionEl = document.getElementById('historyQuestion');
+  const answersEl = document.getElementById('historyAnswers');
+  const pointsEl = document.getElementById('historyPoints');
+  const numberEl = document.getElementById('historyQuestionNumber');
+  const feedbackEl = document.getElementById('historyFeedback');
+  const nextBtn = document.getElementById('historyNext');
+  const resultEl = document.getElementById('historyResult');
+  const finalScoreEl = document.getElementById('historyFinalScore');
+  const restartBtn = document.getElementById('historyRestart');
+  const closeBtn = document.getElementById('historyClose');
+
+  if (![questionEl, answersEl, pointsEl, numberEl, feedbackEl,
+        nextBtn, resultEl, finalScoreEl, restartBtn, closeBtn].every(Boolean)) {
+    console.error('بعض عناصر شاشة التحديات غير موجودة في index.html.');
+    return;
+  }
+
+  let current = 0;
+  let points = 0;
+  let answered = false;
+
+  function showQuestion() {
+    answered = false;
+    const item = questions[current];
+    questionEl.textContent = item.q;
+    numberEl.textContent = current + 1;
+    pointsEl.textContent = points;
+    feedbackEl.textContent = '';
+    nextBtn.hidden = true;
+    resultEl.hidden = true;
+    answersEl.hidden = false;
+    answersEl.replaceChildren();
+
+    item.a.forEach((answer, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = answer;
+      button.style.cssText =
+        'padding:14px;border:2px solid #d7e2e8;border-radius:12px;' +
+        'background:#f7fafc;color:#173b54;cursor:pointer;font-size:16px';
+      button.addEventListener('click', () => chooseAnswer(index, button));
+      answersEl.appendChild(button);
+    });
+  }
+
+  function chooseAnswer(index, selectedButton) {
+    if (answered) return;
+    answered = true;
+
+    const item = questions[current];
+    const buttons = [...answersEl.querySelectorAll('button')];
+
+    buttons.forEach(button => {
+      button.disabled = true;
+      button.style.cursor = 'default';
+    });
+
+    if (index === item.correct) {
+      points += 10;
+      selectedButton.style.background = '#d9f7e8';
+      selectedButton.style.borderColor = '#168653';
+      feedbackEl.textContent = '✅ إجابة صحيحة! +10 نقاط. ' + item.info;
+    } else {
+      selectedButton.style.background = '#ffe5e5';
+      selectedButton.style.borderColor = '#c93b3b';
+      buttons[item.correct].style.background = '#d9f7e8';
+      buttons[item.correct].style.borderColor = '#168653';
+      feedbackEl.textContent = '💡 ليست الإجابة الصحيحة. ' + item.info;
+    }
+
+    pointsEl.textContent = points;
+    nextBtn.textContent =
+      current === questions.length - 1 ? 'عرض النتيجة 🏅' : 'السؤال التالي ←';
+    nextBtn.hidden = false;
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (!answered) return;
+
+    if (current < questions.length - 1) {
+      current++;
+      showQuestion();
+    } else {
+      questionEl.textContent = 'اكتملت مغامرة التاريخ والحضارة!';
+      answersEl.hidden = true;
+      nextBtn.hidden = true;
+      resultEl.hidden = false;
+      numberEl.textContent = questions.length;
+      finalScoreEl.textContent =
+        `حصلت على ${points} من ${questions.length * 10} نقطة.`;
+
+      try {
+        const previous = Number(localStorage.getItem('sirajHistoryBest') || 0);
+        if (points > previous) {
+          localStorage.setItem('sirajHistoryBest', String(points));
+        }
+      } catch (error) {
+        console.info('تعذر حفظ أفضل نتيجة على هذا الجهاز.');
+      }
+    }
+  });
+
+  function startChallenge() {
+    current = 0;
+    points = 0;
+    challenge.hidden = false;
+    resultEl.hidden = true;
+    showQuestion();
+    challenge.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  restartBtn.addEventListener('click', startChallenge);
+
+  closeBtn.addEventListener('click', () => {
+    challenge.hidden = true;
+  });
+
+  document.querySelectorAll('.discovery-card').forEach(card => {
+    const title = card.querySelector('h3');
+    if (!title || !title.textContent.includes('التاريخ والحضارة')) return;
+
+    card.addEventListener('click', event => {
+      event.preventDefault();
+      startChallenge();
+    });
+  });
+})();
