@@ -64,11 +64,11 @@ function updatePoints() {
 function updateProgress() {
   const percent = (state.index / questions.length) * 100;
 
-  $('progressBar').style.width = `${percent}%`;
-  $('progressText').textContent = `${arabicNumber(Math.round(percent))}٪`;
+  $('progressBar').style.width = ${percent}%;
+  $('progressText').textContent = ${arabicNumber(Math.round(percent))}٪;
 
   // يتحرك اللاعب من اليمين إلى اليسار مع تقدم السباق.
-  $('racePlayer').style.right = `${percent}%`;
+  $('racePlayer').style.right = ${percent}%;
   $('racePlayer').style.transform = 'translateX(50%)';
   $('racePlayer').textContent = characterIcons[state.character];
 }
@@ -145,10 +145,10 @@ function chooseAnswer(selectedIndex) {
   if (selectedIndex === question.correct) {
     state.score += 100;
 
-    feedback.textContent = `إجابة صحيحة! +١٠٠ نقطة. ${question.explanation}`;
+    feedback.textContent = إجابة صحيحة! +١٠٠ نقطة. ${question.explanation};
     feedback.className = 'feedback success';
   } else {
-    feedback.textContent = `ليست الإجابة الصحيحة. ${question.explanation}`;
+    feedback.textContent = ليست الإجابة الصحيحة. ${question.explanation};
     feedback.className = 'feedback error';
   }
 
@@ -270,6 +270,27 @@ selectCharacter('explorer');
 updatePoints();
 updateProgress();
 
+// تفعيل بوابات الاستكشاف
+document.querySelectorAll('.gate-card, .portal-card, .explore-card').forEach(gate => {
+  gate.style.cursor = 'pointer';
+
+  gate.addEventListener('click', () => {
+    const title = gate.querySelector('h3, h2, .gate-title, .portal-title');
+    const name = title ? title.textContent.trim() : gate.textContent.trim();
+
+    const details = {
+      'التاريخ والحضارة': 'اكتشف القلاع والحصون والحكايات العُمانية العريقة.',
+      'المحافظات والمعالم': 'انطلق في رحلة عبر محافظات سلطنة عُمان ومعالمها.',
+      'الطبيعة والتراث': 'تعرّف على الجبال والأودية والشواطئ والتقاليد الأصيلة.',
+      'عُمان والمستقبل': 'اكتشف إنجازات عُمان وطموحاتها نحو المستقبل.'
+    };
+
+    const description = Object.entries(details).find(([key]) => name.includes(key));
+
+    alert((description ? description[1] : name) + '\n\nترقّب المزيد من المغامرات في هذه البوابة!');
+  });
+});
+
 
 /* تفعيل بوابات الاستكشاف في سراج عُمان */
 document.querySelectorAll('.discovery-card').forEach((gate) => {
@@ -297,37 +318,17 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
 
     if (adventure) {
       alert(
-        `${adventure.emoji} ${title}\n\n` +
-        `${adventure.description}\n\n` +
-        `${adventure.challenge}\n\n` +
-        `الإجابة: ${adventure.answer}`
+        ${adventure.emoji} ${title}\n\n +
+        ${adventure.description}\n\n +
+        ${adventure.challenge}\n\n +
+        الإجابة: ${adventure.answer}
       );
     } else {
-      alert(`${title}\n\nاستعد لمغامرة جديدة في سِراج عُمان!`);
+      alert(${title}\n\nاستعد لمغامرة جديدة في سِراج عُمان!);
     }
   });
 });
 
-تفعيل بوابات الاستكشاف
-document.querySelectorAll('.gate-card, .portal-card, .explore-card').forEach(gate => {
-  gate.style.cursor = 'pointer';
-
-  gate.addEventListener('click', () => {
-    const title = gate.querySelector('h3, h2, .gate-title, .portal-title');
-    const name = title ? title.textContent.trim() : gate.textContent.trim();
-
-    const details = {
-      'التاريخ والحضارة': 'اكتشف القلاع والحصون والحكايات العُمانية العريقة.',
-      'المحافظات والمعالم': 'انطلق في رحلة عبر محافظات سلطنة عُمان ومعالمها.',
-      'الطبيعة والتراث': 'تعرّف على الجبال والأودية والشواطئ والتقاليد الأصيلة.',
-      'عُمان والمستقبل': 'اكتشف إنجازات عُمان وطموحاتها نحو المستقبل.'
-    };
-
-    const description = Object.entries(details).find(([key]) => name.includes(key));
-
-    alert((description ? description[1] : name) + '\n\nترقّب المزيد من المغامرات في هذه البوابة!');
-  });
-});
 
 /* تفعيل بوابات الاستكشاف */
 document.querySelectorAll('.discovery-card').forEach((gate) => {
@@ -481,7 +482,7 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
       resultEl.hidden = false;
       numberEl.textContent = questions.length;
       finalScoreEl.textContent =
-        `حصلت على ${points} من ${questions.length * 10} نقطة.`;
+        حصلت على ${points} من ${questions.length * 10} نقطة.;
 
       try {
         const previous = Number(localStorage.getItem('sirajHistoryBest') || 0);
@@ -631,7 +632,7 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
         result.hidden = false;
         number.textContent = questions.length;
         finalScore.textContent =
-          `نتيجتك: ${score} من ${questions.length * 10} نقطة.`;
+          نتيجتك: ${score} من ${questions.length * 10} نقطة.;
       }
     };
 
@@ -826,7 +827,7 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
     ui.result.hidden = false;
     ui.number.textContent = activeQuestions.length;
     ui.finalScore.textContent =
-      `نتيجتك: ${score} من ${activeQuestions.length * 10} نقطة.`;
+      نتيجتك: ${score} من ${activeQuestions.length * 10} نقطة.;
 
     try {
       const key = 'sirajBest_' + activeTitle;
@@ -947,11 +948,11 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
 
     if (progressCount) {
       progressCount.textContent =
-        `${completedCount.toLocaleString("ar")} من ٤ بوابات مكتملة`;
+        ${completedCount.toLocaleString("ar")} من ٤ بوابات مكتملة;
     }
 
     if (progressFill) {
-      progressFill.style.width = `${(completedCount / 4) * 100}%`;
+      progressFill.style.width = ${(completedCount / 4) * 100}%;
     }
 
     if (progressBar) {
@@ -966,7 +967,7 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
     ];
 
     journeyGateNames.forEach((name, index) => {
-      const gate = document.getElementById(`journeyGate${index + 1}`);
+      const gate = document.getElementById(journeyGate${index + 1});
       if (!gate) return;
 
       const completed = !!saved.completed[name];
@@ -986,7 +987,7 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
           "🏆 رائع! أكملت جميع البوابات الأربع. أنت سفير عُمان!";
       } else if (completedCount > 0) {
         progressMessage.textContent =
-          `✨ أنجزت ${completedCount.toLocaleString("ar")} من ٤ بوابات. واصل المغامرة لاكتشاف المزيد!`;
+          ✨ أنجزت ${completedCount.toLocaleString("ar")} من ٤ بوابات. واصل المغامرة لاكتشاف المزيد!;
       } else {
         progressMessage.textContent =
           "🚀 انطلق في أول تحدٍّ لتبدأ رحلتك!";
@@ -1101,187 +1102,3 @@ if (headerPoints) {
 
   renderAchievements();
 })();
-
-
-/* اختيار محافظة من قائمة سِراج عُمان */
-(() => {
-  const selector = document.getElementById("governorateSelector");
-  const result = document.getElementById("selectedGovernorate");
-  const name = document.getElementById("selectedGovernorateName");
-
-  if (!selector || !result || !name) return;
-
-  selector.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-governorate]");
-    if (!button) return;
-
-    selector.querySelectorAll("button").forEach((item) => {
-      item.classList.toggle("active", item === button);
-      item.setAttribute("aria-pressed", String(item === button));
-    });
-
-    name.textContent = button.dataset.governorate;
-    result.hidden = false;
-  });
-})();
-
-
-/* تحدي اختيار المحافظة - نسخة أولية مستقلة */
-(() => {
-  const selector = document.getElementById('governorateSelector');
-  const selectedPanel = document.getElementById('selectedGovernorate');
-  if (!selector || !selectedPanel) return;
-
-  const nameEl = document.getElementById('selectedGovernorateName');
-  const intro = document.getElementById('governorateIntro');
-  const startBtn = document.getElementById('startGovernorateChallenge');
-  const quiz = document.getElementById('governorateQuiz');
-  const questionEl = document.getElementById('governorateQuestion');
-  const answersEl = document.getElementById('governorateAnswers');
-  const feedback = document.getElementById('governorateFeedback');
-  const nextBtn = document.getElementById('governorateNext');
-  const scoreEl = document.getElementById('governorateScore');
-
-  const questions = {
-    'مسقط': {
-      q: 'ما عاصمة سلطنة عُمان؟',
-      a: ['مسقط', 'نزوى', 'صلالة'],
-      c: 0,
-      info: 'مسقط هي عاصمة سلطنة عُمان.'
-    },
-    'ظفار': {
-      q: 'بماذا تشتهر ظفار خلال موسم الخريف؟',
-      a: ['الثلوج الدائمة', 'اخضرار الطبيعة والضباب', 'الكثبان الجليدية'],
-      c: 1,
-      info: 'تشتهر ظفار بأجواء الخريف واخضرار الطبيعة.'
-    },
-    'مسندم': {
-      q: 'أين تقع محافظة مسندم؟',
-      a: ['أقصى شمال عُمان', 'جنوب عُمان', 'وسط عُمان'],
-      c: 0,
-      info: 'تقع مسندم في أقصى شمال السلطنة.'
-    },
-    'البريمي': {
-      q: 'أي مدينة تُعد مركز محافظة البريمي؟',
-      a: ['خصب', 'البريمي', 'صور'],
-      c: 1,
-      info: 'مدينة البريمي هي مركز المحافظة التي تحمل اسمها.'
-    },
-    'الداخلية': {
-      q: 'في أي محافظة تقع ولاية نزوى؟',
-      a: ['الداخلية', 'ظفار', 'مسندم'],
-      c: 0,
-      info: 'نزوى من الولايات المعروفة في محافظة الداخلية.'
-    },
-    'شمال الباطنة': {
-      q: 'ما المدينة التي تُعد مركز محافظة شمال الباطنة؟',
-      a: ['صحار', 'صور', 'هيما'],
-      c: 0,
-      info: 'صحار هي مركز محافظة شمال الباطنة.'
-    },
-    'جنوب الباطنة': {
-      q: 'أي محافظة تقع فيها ولاية الرستاق؟',
-      a: ['جنوب الباطنة', 'شمال الشرقية', 'الوسطى'],
-      c: 0,
-      info: 'الرستاق من ولايات محافظة جنوب الباطنة.'
-    },
-    'شمال الشرقية': {
-      q: 'ما مركز محافظة شمال الشرقية؟',
-      a: ['إبراء', 'صلالة', 'خصب'],
-      c: 0,
-      info: 'إبراء هي مركز محافظة شمال الشرقية.'
-    },
-    'جنوب الشرقية': {
-      q: 'أي مدينة ترتبط بمحافظة جنوب الشرقية؟',
-      a: ['صور', 'صحار', 'البريمي'],
-      c: 0,
-      info: 'صور من أبرز مدن محافظة جنوب الشرقية.'
-    },
-    'الظاهرة': {
-      q: 'ما مركز محافظة الظاهرة؟',
-      a: ['عبري', 'نزوى', 'مسقط'],
-      c: 0,
-      info: 'عبري هي مركز محافظة الظاهرة.'
-    },
-    'الوسطى': {
-      q: 'ما مركز محافظة الوسطى؟',
-      a: ['هيما', 'الرستاق', 'خصب'],
-      c: 0,
-      info: 'هيما هي مركز محافظة الوسطى.'
-    }
-  };
-
-  let selected = '';
-  let score = 0;
-  let answered = false;
-
-  selector.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-governorate]');
-    if (!button) return;
-
-    selected = button.dataset.governorate;
-    selector.querySelectorAll('button').forEach((item) => {
-      const active = item === button;
-      item.classList.toggle('active', active);
-      item.setAttribute('aria-pressed', String(active));
-    });
-
-    nameEl.textContent = `محافظة ${selected}`;
-    intro.textContent = 'اختبر معرفتك بمعلومة عن هذه المحافظة.';
-    selectedPanel.hidden = false;
-    quiz.hidden = true;
-    startBtn.hidden = false;
-  });
-
-  startBtn.addEventListener('click', () => {
-    if (!questions[selected]) return;
-    score = 0;
-    startBtn.hidden = true;
-    quiz.hidden = false;
-    showQuestion();
-  });
-
-  function showQuestion() {
-    const item = questions[selected];
-    answered = false;
-    questionEl.textContent = item.q;
-    feedback.textContent = '';
-    scoreEl.textContent = `النقاط: ${score}`;
-    nextBtn.hidden = true;
-    answersEl.replaceChildren();
-
-    item.a.forEach((answer, index) => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.textContent = answer;
-      button.addEventListener('click', () => {
-        if (answered) return;
-        answered = true;
-
-        answersEl.querySelectorAll('button').forEach((option) => {
-          option.disabled = true;
-        });
-
-        if (index === item.c) {
-          score += 10;
-          button.classList.add('active');
-          feedback.textContent = `إجابة صحيحة! +١٠ نقاط. ${item.info}`;
-        } else {
-          feedback.textContent = `حاول مرة أخرى في مغامرة قادمة. ${item.info}`;
-        }
-
-        scoreEl.textContent = `النقاط: ${score}`;
-        nextBtn.textContent = 'اختيار محافظة أخرى';
-        nextBtn.hidden = false;
-      });
-      answersEl.appendChild(button);
-    });
-  }
-
-  nextBtn.addEventListener('click', () => {
-    quiz.hidden = true;
-    startBtn.hidden = false;
-    startBtn.textContent = 'إعادة تحدي المحافظة 🧭';
-  });
-})();
-
