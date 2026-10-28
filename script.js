@@ -290,3 +290,42 @@ document.querySelectorAll('.gate-card, .portal-card, .explore-card').forEach(gat
     alert((description ? description[1] : name) + '\n\nترقّب المزيد من المغامرات في هذه البوابة!');
   });
 });
+
+
+/* تفعيل بوابات الاستكشاف في سراج عُمان */
+document.querySelectorAll('.discovery-card').forEach((gate) => {
+  gate.style.cursor = 'pointer';
+
+  gate.addEventListener('click', () => {
+    const title = gate.querySelector('h3')?.textContent.trim();
+
+    const adventures = {
+      'التاريخ والحضارة': {
+        emoji: '🏛️',
+        description: 'استكشف قلاع عُمان وحصونها، واكتشف أسرار الحضارة العُمانية.',
+        challenge: 'تحدٍّ: لماذا بُنيت القلاع والحصون قديمًا؟',
+        answer: 'للدفاع والحماية ومراقبة الطرق والمناطق المهمة.'
+      },
+      'المحافظات والمعالم': {
+        emoji: '🗺️',
+        description: 'انطلق في رحلة بين محافظات عُمان، من الجبال الشامخة إلى الشواطئ الساحرة.',
+        challenge: 'تحدٍّ: كم عدد محافظات سلطنة عُمان؟',
+        answer: '١١ محافظة.'
+      }
+    };
+
+    const adventure = adventures[title];
+
+    if (adventure) {
+      alert(
+        `${adventure.emoji} ${title}\n\n` +
+        `${adventure.description}\n\n` +
+        `${adventure.challenge}\n\n` +
+        `الإجابة: ${adventure.answer}`
+      );
+    } else {
+      alert(`${title}\n\nاستعد لمغامرة جديدة في سِراج عُمان!`);
+    }
+  });
+});
+
