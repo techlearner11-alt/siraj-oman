@@ -935,6 +935,65 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
     
     const totalElement = document.getElementById("sirajTotalPoints");
     if (totalElement) totalElement.textContent = total;
+    
+    // تحديث مسار مغامرة سِراج عُمان
+    const completedCount = portalNames.filter(
+      name => !!saved.completed[name]
+    ).length;
+
+    const progressCount = document.getElementById("journeyProgressCount");
+    const progressBar = document.getElementById("journeyProgressBar");
+    const progressFill = document.getElementById("journeyProgressFill");
+    const progressMessage = document.getElementById("journeyProgressMessage");
+
+    if (progressCount) {
+      progressCount.textContent =
+        `${completedCount.toLocaleString("ar")} من ٤ بوابات مكتملة`;
+    }
+
+    if (progressFill) {
+      progressFill.style.width = `${(completedCount / 4) * 100}%`;
+    }
+
+    if (progressBar) {
+      progressBar.setAttribute("aria-valuenow", completedCount);
+    }
+
+    const journeyGateNames = [
+      "التاريخ والحضارة",
+      "المحافظات والمعالم",
+      "الطبيعة والتراث",
+      "عُمان والمستقبل"
+    ];
+
+    journeyGateNames.forEach((name, index) => {
+      const gate = document.getElementById(`journeyGate${index + 1}`);
+      if (!gate) return;
+
+      const completed = !!saved.completed[name];
+      gate.classList.toggle("completed", completed);
+
+      const status = gate.querySelector(".journey-gate-status");
+      if (status) {
+        status.textContent = completed
+          ? "مكتملة ✓"
+          : "بانتظار الاكتشاف";
+      }
+    });
+
+    if (progressMessage) {
+      if (completedCount === 4) {
+        progressMessage.textContent =
+          "🏆 رائع! أكملت جميع البوابات الأربع. أنت سفير عُمان!";
+      } else if (completedCount > 0) {
+        progressMessage.textContent =
+          `✨ أنجزت ${completedCount.toLocaleString("ar")} من ٤ بوابات. واصل المغامرة لاكتشاف المزيد!`;
+      } else {
+        progressMessage.textContent =
+          "🚀 انطلق في أول تحدٍّ لتبدأ رحلتك!";
+      }
+    }
+
     const headerPoints = document.getElementById("headerPoints");
 if (headerPoints) {
   headerPoints.textContent = total.toLocaleString("ar");
