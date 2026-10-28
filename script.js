@@ -1102,3 +1102,27 @@ if (headerPoints) {
 
   renderAchievements();
 })();
+
+
+/* اختيار محافظة من قائمة سِراج عُمان */
+(() => {
+  const selector = document.getElementById("governorateSelector");
+  const result = document.getElementById("selectedGovernorate");
+  const name = document.getElementById("selectedGovernorateName");
+
+  if (!selector || !result || !name) return;
+
+  selector.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-governorate]");
+    if (!button) return;
+
+    selector.querySelectorAll("button").forEach((item) => {
+      item.classList.toggle("active", item === button);
+      item.setAttribute("aria-pressed", String(item === button));
+    });
+
+    name.textContent = button.dataset.governorate;
+    result.hidden = false;
+  });
+})();
+
