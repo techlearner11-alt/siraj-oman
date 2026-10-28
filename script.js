@@ -520,3 +520,124 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
     });
   });
 })();
+
+
+/* ===== تحديات المحافظات والمعالم ===== */
+(() => {
+  const cards = [...document.querySelectorAll('.discovery-card')];
+  const card = cards.find(c =>
+    c.querySelector('h3')?.textContent.includes('المحافظات والمعالم')
+  );
+
+  const challenge = document.getElementById('historyChallenge');
+  if (!card || !challenge) return;
+
+  card.addEventListener('click', event => {
+    event.preventDefault();
+
+    const title = document.getElementById('historyQuestion');
+    const answers = document.getElementById('historyAnswers');
+    const points = document.getElementById('historyPoints');
+    const number = document.getElementById('historyQuestionNumber');
+    const feedback = document.getElementById('historyFeedback');
+    const next = document.getElementById('historyNext');
+    const result = document.getElementById('historyResult');
+    const finalScore = document.getElementById('historyFinalScore');
+    const restart = document.getElementById('historyRestart');
+
+    const questions = [
+      { q: 'كم عدد محافظات سلطنة عُمان؟',
+        a: ['9 محافظات', '11 محافظة', '13 محافظة'],
+        correct: 1, info: 'تتكون سلطنة عُمان من 11 محافظة.' },
+      { q: 'في أي محافظة تقع ولاية صلالة؟',
+        a: ['ظفار', 'الداخلية', 'مسندم'],
+        correct: 0, info: 'تقع صلالة في محافظة ظفار جنوب سلطنة عُمان.' },
+      { q: 'في أي محافظة تقع ولاية نزوى؟',
+        a: ['شمال الباطنة', 'الداخلية', 'الوسطى'],
+        correct: 1, info: 'نزوى إحدى ولايات محافظة الداخلية.' },
+      { q: 'ما المحافظة التي تقع في أقصى شمال سلطنة عُمان؟',
+        a: ['مسندم', 'ظفار', 'جنوب الشرقية'],
+        correct: 0, info: 'تقع محافظة مسندم في أقصى شمال السلطنة.' },
+      { q: 'في أي محافظة تقع ولاية صحار؟',
+        a: ['جنوب الباطنة', 'شمال الباطنة', 'البريمي'],
+        correct: 1, info: 'صحار هي مركز محافظة شمال الباطنة.' }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let answered = false;
+
+    challenge.hidden = false;
+    result.hidden = true;
+    answers.hidden = false;
+    challenge.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    function showQuestion() {
+      answered = false;
+      const item = questions[current];
+      title.textContent = item.q;
+      number.textContent = current + 1;
+      points.textContent = score;
+      feedback.textContent = '';
+      next.hidden = true;
+      result.hidden = true;
+      answers.hidden = false;
+      answers.replaceChildren();
+
+      item.a.forEach((text, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = text;
+        button.style.cssText =
+          'padding:14px;border:2px solid #d7e2e8;border-radius:12px;' +
+          'background:#f7fafc;color:#173b54;cursor:pointer;font-size:16px';
+
+        button.addEventListener('click', () => {
+          if (answered) return;
+          answered = true;
+
+          const buttons = [...answers.querySelectorAll('button')];
+          buttons.forEach(b => b.disabled = true);
+
+          if (index === item.correct) {
+            score += 10;
+            button.style.background = '#d9f7e8';
+            feedback.textContent = '✅ إجابة صحيحة! +10 نقاط. ' + item.info;
+          } else {
+            button.style.background = '#ffe5e5';
+            buttons[item.correct].style.background = '#d9f7e8';
+            feedback.textContent = '💡 ليست الإجابة الصحيحة. ' + item.info;
+          }
+
+          points.textContent = score;
+          next.textContent = current === questions.length - 1
+            ? 'عرض النتيجة 🏅' : 'السؤال التالي ←';
+          next.hidden = false;
+        });
+
+        answers.appendChild(button);
+      });
+    }
+
+    next.onclick = () => {
+      if (!answered) return;
+
+      if (current < questions.length - 1) {
+        current++;
+        showQuestion();
+      } else {
+        title.textContent = 'أكملت مغامرة المحافظات والمعالم!';
+        answers.hidden = true;
+        next.hidden = true;
+        result.hidden = false;
+        number.textContent = questions.length;
+        finalScore.textContent =
+          `نتيجتك: ${score} من ${questions.length * 10} نقطة.`;
+      }
+    };
+
+    restart.onclick = showQuestion;
+    showQuestion();
+  });
+})();
+
