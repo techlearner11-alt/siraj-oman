@@ -1102,3 +1102,72 @@ if (headerPoints) {
 
   renderAchievements();
 })();
+
+
+/* إصلاح فتح بوابات سِراج عُمان */
+(() => {
+  document.addEventListener('click', (event) => {
+    const card = event.target.closest('.discovery-card');
+    if (!card) return;
+
+    const heading = card.querySelector('h3');
+    if (!heading) return;
+
+    const portalName = heading.textContent.trim();
+    const challenge = document.getElementById('historyChallenge');
+
+    if (!challenge) {
+      console.error('لم يتم العثور على شاشة التحديات historyChallenge');
+      return;
+    }
+
+    if (
+      portalName === 'التاريخ والحضارة' ||
+      portalName === 'المحافظات والمعالم'
+    ) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      challenge.hidden = false;
+      challenge.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+
+      const question = document.getElementById('historyQuestion');
+      const answers = document.getElementById('historyAnswers');
+
+      if (portalName === 'التاريخ والحضارة') {
+        if (question) {
+          question.textContent = 'ما اسم الحصن التاريخي الشهير في ولاية نزوى؟';
+        }
+
+        if (answers) {
+          answers.hidden = false;
+          answers.replaceChildren();
+
+          ['حصن نزوى', 'قلعة بهلاء', 'حصن جبرين'].forEach((answer, index) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = answer;
+
+            button.addEventListener('click', () => {
+              if (answers.dataset.answered === 'true') return;
+              answers.dataset.answered = 'true';
+
+              const feedback = document.getElementById('historyFeedback');
+              if (feedback) {
+                feedback.textContent = index === 0
+                  ? 'إجابة صحيحة! حصن نزوى من أبرز المعالم التاريخية.'
+                  : 'الإجابة الصحيحة هي حصن نزوى.';
+              }
+            });
+
+            answers.appendChild(button);
+          });
+        }
+      }
+    }
+  }, true);
+})();
+
