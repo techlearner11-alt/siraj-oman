@@ -932,8 +932,13 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
     const total = Object.values(saved.bestScores)
       .reduce((sum, score) => sum + (Number(score) || 0), 0);
 
+    
     const totalElement = document.getElementById("sirajTotalPoints");
     if (totalElement) totalElement.textContent = total;
+    const headerPoints = document.getElementById("headerPoints");
+if (headerPoints) {
+  headerPoints.textContent = total.toLocaleString("ar");
+}
 
     const explorer = document.getElementById("badgeExplorer");
     const governorates = document.getElementById("badgeGovernorates");
