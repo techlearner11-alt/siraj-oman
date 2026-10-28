@@ -641,3 +641,252 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
   });
 })();
 
+/* ===== سراج عُمان: تفعيل بوابتي الطبيعة والمستقبل ===== */
+(() => {
+  const challenge = document.getElementById('historyChallenge');
+  if (!challenge) {
+    console.error('لم يتم العثور على شاشة التحديات.');
+    return;
+  }
+
+  const $ = id => document.getElementById(id);
+
+  const ui = {
+    question: $('historyQuestion'),
+    answers: $('historyAnswers'),
+    points: $('historyPoints'),
+    number: $('historyQuestionNumber'),
+    feedback: $('historyFeedback'),
+    next: $('historyNext'),
+    result: $('historyResult'),
+    finalScore: $('historyFinalScore'),
+    restart: $('historyRestart'),
+    close: $('historyClose')
+  };
+
+  if (Object.values(ui).some(element => !element)) {
+    console.error('تحققي من وجود عناصر شاشة التحديات في index.html.');
+    return;
+  }
+
+  const portals = {
+    'الطبيعة والتراث': [
+      {
+        q: 'بماذا تتميز الأودية العُمانية؟',
+        a: ['بالمياه والمناظر الطبيعية المتنوعة', 'بالثلوج الدائمة', 'بالأنهار الجليدية'],
+        c: 0,
+        info: 'تتميز أودية عُمان بتنوع تضاريسها وبركها المائية ومناظرها الطبيعية.'
+      },
+      {
+        q: 'ما اسم الشجرة التي يُستخرج منها اللبان؟',
+        a: ['شجرة النخيل', 'شجرة اللبان', 'شجرة الزيتون'],
+        c: 1,
+        info: 'يُستخرج اللبان من أشجار اللبان، التي تشتهر بها محافظة ظفار.'
+      },
+      {
+        q: 'أي ولاية عُمانية تشتهر بصناعة الفخار التقليدي؟',
+        a: ['بهلاء', 'خصب', 'مصيرة'],
+        c: 0,
+        info: 'تشتهر ولاية بهلاء في محافظة الداخلية بصناعة الفخار.'
+      },
+      {
+        q: 'ما السلوك الأفضل عند زيارة منطقة طبيعية؟',
+        a: ['ترك النفايات خلفنا', 'إتلاف النباتات', 'المحافظة على المكان وعدم ترك النفايات'],
+        c: 2,
+        info: 'حماية الطبيعة مسؤولية الجميع، ويجب ترك المواقع نظيفة.'
+      },
+      {
+        q: 'أي بيئة طبيعية تشتهر بها محافظة ظفار خلال موسم الخريف؟',
+        a: ['المروج الخضراء والضباب', 'الجليد الدائم', 'الغابات القطبية'],
+        c: 0,
+        info: 'يتميز موسم الخريف في ظفار بانخفاض الحرارة نسبيًا والضباب واخضرار الطبيعة.'
+      }
+    ],
+
+    'عُمان والمستقبل': [
+      {
+        q: 'ما المصدر الذي ينتج الكهرباء من أشعة الشمس؟',
+        a: ['الألواح الشمسية', 'الفحم الخشبي فقط', 'مياه البحر دون أجهزة'],
+        c: 0,
+        info: 'تحول الألواح الشمسية ضوء الشمس إلى طاقة كهربائية.'
+      },
+      {
+        q: 'ما المقصود بالاستدامة؟',
+        a: ['استهلاك الموارد دون تفكير', 'تلبية احتياجات الحاضر مع الحفاظ على موارد المستقبل', 'التخلص من جميع الموارد'],
+        c: 1,
+        info: 'تهدف الاستدامة إلى استخدام الموارد بمسؤولية للأجيال الحالية والقادمة.'
+      },
+      {
+        q: 'كيف تساعد التقنية في التعليم؟',
+        a: ['تمنع البحث والتعلم', 'تتيح مصادر وأدوات تعلم متنوعة', 'تجعل التحقق من المعلومات غير ضروري'],
+        c: 1,
+        info: 'توفر التقنية أدوات تفاعلية ومصادر متعددة، مع أهمية التحقق من المعلومات.'
+      },
+      {
+        q: 'أي سلوك يعزز الابتكار؟',
+        a: ['رفض جميع الأفكار الجديدة', 'تكرار الحلول دون تفكير', 'تجربة أفكار جديدة وتقييم نتائجها'],
+        c: 2,
+        info: 'يقوم الابتكار على التفكير والتجربة والتعلم من النتائج.'
+      },
+      {
+        q: 'كيف نستخدم الذكاء الاصطناعي بمسؤولية؟',
+        a: ['نصدق كل نتيجة دون تحقق', 'نتحقق من المعلومات ونحافظ على الخصوصية', 'نشارك كلمات المرور معه'],
+        c: 1,
+        info: 'من الاستخدام المسؤول التحقق من المخرجات وحماية البيانات الشخصية.'
+      }
+    ]
+  };
+
+  let activeQuestions = [];
+  let activeTitle = '';
+  let current = 0;
+  let score = 0;
+  let answered = false;
+
+  function startPortal(name) {
+    activeTitle = name;
+    activeQuestions = portals[name];
+    current = 0;
+    score = 0;
+    answered = false;
+
+    challenge.hidden = false;
+    ui.result.hidden = true;
+    ui.answers.hidden = false;
+
+    const heading = challenge.querySelector('h2');
+    if (heading) heading.textContent = '🌟 مغامرة ' + name;
+
+    showQuestion();
+    challenge.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showQuestion() {
+    const item = activeQuestions[current];
+    answered = false;
+
+    ui.question.textContent = item.q;
+    ui.number.textContent = current + 1;
+    ui.points.textContent = score;
+    ui.feedback.textContent = '';
+    ui.next.hidden = true;
+    ui.result.hidden = true;
+    ui.answers.hidden = false;
+    ui.answers.replaceChildren();
+
+    item.a.forEach((answer, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = answer;
+      button.style.cssText =
+        'padding:14px;border:2px solid #d7e2e8;border-radius:12px;' +
+        'background:#f7fafc;color:#173b54;cursor:pointer;font-size:16px';
+
+      button.addEventListener('click', () => chooseAnswer(index, button));
+      ui.answers.appendChild(button);
+    });
+  }
+
+  function chooseAnswer(index, selected) {
+    if (answered) return;
+    answered = true;
+
+    const item = activeQuestions[current];
+    const buttons = [...ui.answers.querySelectorAll('button')];
+
+    buttons.forEach(button => {
+      button.disabled = true;
+      button.style.cursor = 'default';
+    });
+
+    if (index === item.c) {
+      score += 10;
+      selected.style.background = '#d9f7e8';
+      selected.style.borderColor = '#168653';
+      ui.feedback.textContent = '✅ إجابة صحيحة! +10 نقاط. ' + item.info;
+    } else {
+      selected.style.background = '#ffe5e5';
+      selected.style.borderColor = '#c93b3b';
+      buttons[item.c].style.background = '#d9f7e8';
+      buttons[item.c].style.borderColor = '#168653';
+      ui.feedback.textContent = '💡 ليست الإجابة الصحيحة. ' + item.info;
+    }
+
+    ui.points.textContent = score;
+    ui.next.textContent =
+      current === activeQuestions.length - 1
+        ? 'عرض النتيجة 🏅'
+        : 'السؤال التالي ←';
+    ui.next.hidden = false;
+  }
+
+  function showResult() {
+    ui.question.textContent = 'أكملت مغامرة ' + activeTitle + '!';
+    ui.answers.hidden = true;
+    ui.next.hidden = true;
+    ui.result.hidden = false;
+    ui.number.textContent = activeQuestions.length;
+    ui.finalScore.textContent =
+      `نتيجتك: ${score} من ${activeQuestions.length * 10} نقطة.`;
+
+    try {
+      const key = 'sirajBest_' + activeTitle;
+      const previous = Number(localStorage.getItem(key) || 0);
+
+      if (score > previous) {
+        localStorage.setItem(key, String(score));
+      }
+    } catch (error) {
+      // تستمر اللعبة حتى إذا تعذر حفظ النتيجة.
+    }
+  }
+
+  ui.next.addEventListener('click', () => {
+    if (!answered) return;
+
+    if (current < activeQuestions.length - 1) {
+      current++;
+      showQuestion();
+    } else {
+      showResult();
+    }
+  });
+
+  ui.restart.addEventListener('click', () => {
+    if (!activeQuestions.length) return;
+    startPortal(activeTitle);
+  });
+
+  ui.close.addEventListener('click', () => {
+    challenge.hidden = true;
+  });
+
+  // التقاط النقر قبل أي مستمع قديم على البطاقة.
+  document.addEventListener('click', event => {
+    const card = event.target.closest('.discovery-card');
+    if (!card) return;
+
+    const heading = card.querySelector('h3');
+    if (!heading) return;
+
+    const name = heading.textContent.trim();
+    if (!portals[name]) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const label = card.querySelector('.coming-label');
+    if (label) label.remove();
+
+    startPortal(name);
+  }, true);
+
+  // إزالة عبارة قيد التطوير من البوابتين اللتين اكتملتا.
+  document.querySelectorAll('.discovery-card').forEach(card => {
+    const heading = card.querySelector('h3');
+    if (heading && portals[heading.textContent.trim()]) {
+      card.querySelector('.coming-label')?.remove();
+    }
+  });
+})();
+
