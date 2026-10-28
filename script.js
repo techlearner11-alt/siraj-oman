@@ -890,3 +890,151 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
   });
 })();
 
+
+
+/* ===== نظام إنجازات سِراج عُمان ===== */
+(function () {
+  const STORAGE_KEY = "sirajOmanAchievementsV1";
+
+  const portalNames = [
+    "التاريخ والحضارة",
+    "المحافظات والمعالم",
+    "الطبيعة والتراث",
+    "عُمان والمستقبل"
+  ];
+
+  let saved = {};
+
+  try {
+    saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  } catch (error) {
+    saved = {};
+  }
+
+  saved.completed = saved.completed || {};
+  saved.bestScores = saved.bestScores || {};
+
+  let activePortal = "";
+  let previousResult = "";
+
+  const result = document.getElementById("historyResult");
+  const finalScore = document.getElementById("historyFinalScore");
+
+  function saveProgress() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+    } catch (error) {
+      console.warn("تعذر حفظ الإنجازات على هذا الجهاز.");
+    }
+  }
+
+  function renderAchievements() {
+    const total = Object.values(saved.bestScores)
+      .reduce((sum, score) => sum + (Number(score) || 0), 0);
+
+    const totalElement = document.getElementById("sirajTotalPoints");
+    if (totalElement) totalElement.textContent = total;
+
+    const explorer = document.getElementById("badgeExplorer");
+    const governorates = document.getElementById("badgeGovernorates");
+    const ambassador = document.getElementById("badgeAmbassador");
+
+    function updateBadge(element, unlocked) {
+      if (!element) return;
+
+      element.classList.toggle("locked", !unlocked);
+      element.classList.toggle("unlocked", unlocked);
+
+      const status = element.querySelector(".badge-status");
+      if (status) {
+        status.textContent = unlocked
+          ? "🏆 تم اكتسابه!"
+          : "🔒 لم يُكتسب بعد";
+      }
+    }
+
+    updateBadge(explorer, Object.keys(saved.completed).length > 0);
+
+    updateBadge(
+      governorates,
+      !!saved.completed["المحافظات والمعالم"]
+    );
+
+    updateBadge(
+      ambassador,
+      portalNames.every(name => !!saved.completed[name])
+    );
+  }
+
+  function detectPortal(card) {
+    const heading = card.querySelector("h3");
+    return heading ? heading.textContent.trim() : "";
+  }
+
+  document.addEventListener("click", function (event) {
+    const card = event.target.closest(".discovery-card");
+
+    if (card) {
+      const name = detectPortal(card);
+      if (portalNames.includes(name)) {
+        activePortal = name;
+        previousResult = "";
+      }
+    }
+
+    if (event.target.closest("#historyRestart")) {
+      previousResult = "";
+    }
+  }, true);
+
+  function checkChallengeResult() {
+    if (!result || !finalScore || !activePortal) return;
+
+    const isVisible =
+      !result.hidden &&
+      result.getAttribute("aria-hidden") !== "true" &&
+      getComputedStyle(result).display !== "none";
+
+    if (!isVisible) {
+      previousResult = "";
+      return;
+    }
+
+    const resultText = result.textContent.trim();
+    if (!resultText || resultText === previousResult) return;
+
+    previousResult = resultText;
+
+    const scoreMatch = finalScore.textContent.match(/-?\d+/);
+    const score = scoreMatch ? Number(scoreMatch[0]) : 0;
+
+    saved.completed[activePortal] = true;
+
+    saved.bestScores[activePortal] = Math.max(
+      Number(saved.bestScores[activePortal]) || 0,
+      score
+    );
+
+    saveProgress();
+    renderAchievements();
+  }
+
+  if (result) {
+    new MutationObserver(checkChallengeResult).observe(result, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      characterData: true
+    });
+  }
+
+  if (finalScore) {
+    new MutationObserver(checkChallengeResult).observe(finalScore, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+  }
+
+  renderAchievements();
+})();
