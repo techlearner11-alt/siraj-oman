@@ -279,6 +279,59 @@
 </section>
 
       
+<section id="governorateMapSection" class="section-block">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">رحلتك عبر عُمان</span>
+      <h2>اختر محافظتك وانطلق في المغامرة</h2>
+      <p>اكتشف المحافظات العُمانية الإحدى عشرة وتعرّف على معالمها وتراثها.</p>
+    </div>
+  </div>
+
+  <div class="official-map-panel">
+    <div class="official-map-heading">
+      <span>🗺️</span>
+      <div>
+        <strong>الخريطة الرسمية لسلطنة عُمان</strong>
+        <p>المصدر: هيئة المساحة الوطنية</p>
+      </div>
+    </div>
+
+    <iframe
+      title="خريطة سلطنة عُمان الرسمية"
+      src="https://www.arcgis.com/apps/mapviewer/index.html?url=https://gisserver.nsaomangeoportal.gov.om/gisserver/rest/services/NSA/Base_map_Arabic/MapServer"
+      loading="lazy"
+      allowfullscreen>
+    </iframe>
+
+    <p class="map-note">
+      اختر المحافظة من القائمة لبدء استكشافها.
+      يعرض الإطار الخريطة المرجعية؛ أما اختيار المحافظة
+      فيتم من القائمة أدناه.
+    </p>
+
+    <div id="governorateSelector" class="governorate-selector">
+      <button type="button" data-governorate="مسقط">مسقط</button>
+      <button type="button" data-governorate="ظفار">ظفار</button>
+      <button type="button" data-governorate="مسندم">مسندم</button>
+      <button type="button" data-governorate="البريمي">البريمي</button>
+      <button type="button" data-governorate="الداخلية">الداخلية</button>
+      <button type="button" data-governorate="شمال الباطنة">شمال الباطنة</button>
+      <button type="button" data-governorate="جنوب الباطنة">جنوب الباطنة</button>
+      <button type="button" data-governorate="شمال الشرقية">شمال الشرقية</button>
+      <button type="button" data-governorate="جنوب الشرقية">جنوب الشرقية</button>
+      <button type="button" data-governorate="الظاهرة">الظاهرة</button>
+      <button type="button" data-governorate="الوسطى">الوسطى</button>
+    </div>
+
+    <div id="selectedGovernorate" class="selected-governorate" hidden>
+      <h3 id="selectedGovernorateName"></h3>
+      <p>تم اختيار المحافظة. الخطوة التالية هي ربطها بمحطتها وأسئلتها وأوسمتها في اللعبة.</p>
+    </div>
+  </div>
+</section>
+
+      
       <div class="discovery-grid">
         <article class="discovery-card">
           <span>🏛️</span>
