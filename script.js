@@ -1170,4 +1170,3 @@ if (headerPoints) {
     }
   }, true);
 })();
-
