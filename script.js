@@ -62,8 +62,8 @@ function updatePoints() {
 }
 
 function updateProgress() {
-  const percent = (state.index / questions.length) * 100;
-
+const completed = state.index + (state.answered ? 1 : 0);
+const percent = (completed / questions.length) * 100;
   $('progressBar').style.width = `${percent}%`;
   $('progressText').textContent = `${arabicNumber(Math.round(percent))}٪`;
 
@@ -153,6 +153,7 @@ function chooseAnswer(selectedIndex) {
   }
 
   updatePoints();
+  updateProgress();
 
   $('nextButton').textContent =
     state.index === questions.length - 1 ? 'عرض النتيجة 🏆' : 'السؤال التالي ←';
