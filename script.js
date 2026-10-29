@@ -64,11 +64,11 @@ function updatePoints() {
 function updateProgress() {
   const percent = (state.index / questions.length) * 100;
 
-  $('progressBar').style.width = ${percent}%;
-  $('progressText').textContent = ${arabicNumber(Math.round(percent))}٪;
+  $('progressBar').style.width = `${percent}%`;
+  $('progressText').textContent = `${arabicNumber(Math.round(percent))}٪`;
 
   // يتحرك اللاعب من اليمين إلى اليسار مع تقدم السباق.
-  $('racePlayer').style.right = ${percent}%;
+  $('racePlayer').style.right = `${percent}%`;
   $('racePlayer').style.transform = 'translateX(50%)';
   $('racePlayer').textContent = characterIcons[state.character];
 }
@@ -145,10 +145,10 @@ function chooseAnswer(selectedIndex) {
   if (selectedIndex === question.correct) {
     state.score += 100;
 
-    feedback.textContent = إجابة صحيحة! +١٠٠ نقطة. ${question.explanation};
+    feedback.textContent = `إجابة صحيحة! +١٠٠ نقطة. ${question.explanation}`;
     feedback.className = 'feedback success';
   } else {
-    feedback.textContent = ليست الإجابة الصحيحة. ${question.explanation};
+    feedback.textContent = `ليست الإجابة الصحيحة. ${question.explanation}`;
     feedback.className = 'feedback error';
   }
 
@@ -318,13 +318,13 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
 
     if (adventure) {
       alert(
-        ${adventure.emoji} ${title}\n\n +
-        ${adventure.description}\n\n +
-        ${adventure.challenge}\n\n +
-        الإجابة: ${adventure.answer}
+        `${adventure.emoji} ${title}\n\n` +
+        `${adventure.description}\n\n` +
+        `${adventure.challenge}\n\n` +
+        `الإجابة: ${adventure.answer}`
       );
     } else {
-      alert(${title}\n\nاستعد لمغامرة جديدة في سِراج عُمان!);
+      alert(`${title}\n\nاستعد لمغامرة جديدة في سِراج عُمان!`);
     }
   });
 });
@@ -482,7 +482,7 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
       resultEl.hidden = false;
       numberEl.textContent = questions.length;
       finalScoreEl.textContent =
-        حصلت على ${points} من ${questions.length * 10} نقطة.;
+        `حصلت على ${points} من ${questions.length * 10} نقطة.`;
 
       try {
         const previous = Number(localStorage.getItem('sirajHistoryBest') || 0);
@@ -632,7 +632,7 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
         result.hidden = false;
         number.textContent = questions.length;
         finalScore.textContent =
-          نتيجتك: ${score} من ${questions.length * 10} نقطة.;
+          `نتيجتك: ${score} من ${questions.length * 10} نقطة.`;
       }
     };
 
@@ -827,7 +827,7 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
     ui.result.hidden = false;
     ui.number.textContent = activeQuestions.length;
     ui.finalScore.textContent =
-      نتيجتك: ${score} من ${activeQuestions.length * 10} نقطة.;
+      `نتيجتك: ${score} من ${activeQuestions.length * 10} نقطة.`;
 
     try {
       const key = 'sirajBest_' + activeTitle;
@@ -935,65 +935,6 @@ document.querySelectorAll('.discovery-card').forEach((gate) => {
     
     const totalElement = document.getElementById("sirajTotalPoints");
     if (totalElement) totalElement.textContent = total;
-    
-    // تحديث مسار مغامرة سِراج عُمان
-    const completedCount = portalNames.filter(
-      name => !!saved.completed[name]
-    ).length;
-
-    const progressCount = document.getElementById("journeyProgressCount");
-    const progressBar = document.getElementById("journeyProgressBar");
-    const progressFill = document.getElementById("journeyProgressFill");
-    const progressMessage = document.getElementById("journeyProgressMessage");
-
-    if (progressCount) {
-      progressCount.textContent =
-        ${completedCount.toLocaleString("ar")} من ٤ بوابات مكتملة;
-    }
-
-    if (progressFill) {
-      progressFill.style.width = ${(completedCount / 4) * 100}%;
-    }
-
-    if (progressBar) {
-      progressBar.setAttribute("aria-valuenow", completedCount);
-    }
-
-    const journeyGateNames = [
-      "التاريخ والحضارة",
-      "المحافظات والمعالم",
-      "الطبيعة والتراث",
-      "عُمان والمستقبل"
-    ];
-
-    journeyGateNames.forEach((name, index) => {
-      const gate = document.getElementById(journeyGate${index + 1});
-      if (!gate) return;
-
-      const completed = !!saved.completed[name];
-      gate.classList.toggle("completed", completed);
-
-      const status = gate.querySelector(".journey-gate-status");
-      if (status) {
-        status.textContent = completed
-          ? "مكتملة ✓"
-          : "بانتظار الاكتشاف";
-      }
-    });
-
-    if (progressMessage) {
-      if (completedCount === 4) {
-        progressMessage.textContent =
-          "🏆 رائع! أكملت جميع البوابات الأربع. أنت سفير عُمان!";
-      } else if (completedCount > 0) {
-        progressMessage.textContent =
-          ✨ أنجزت ${completedCount.toLocaleString("ar")} من ٤ بوابات. واصل المغامرة لاكتشاف المزيد!;
-      } else {
-        progressMessage.textContent =
-          "🚀 انطلق في أول تحدٍّ لتبدأ رحلتك!";
-      }
-    }
-
     const headerPoints = document.getElementById("headerPoints");
 if (headerPoints) {
   headerPoints.textContent = total.toLocaleString("ar");
@@ -1101,72 +1042,4 @@ if (headerPoints) {
   }
 
   renderAchievements();
-})();
-
-
-/* إصلاح فتح بوابات سِراج عُمان */
-(() => {
-  document.addEventListener('click', (event) => {
-    const card = event.target.closest('.discovery-card');
-    if (!card) return;
-
-    const heading = card.querySelector('h3');
-    if (!heading) return;
-
-    const portalName = heading.textContent.trim();
-    const challenge = document.getElementById('historyChallenge');
-
-    if (!challenge) {
-      console.error('لم يتم العثور على شاشة التحديات historyChallenge');
-      return;
-    }
-
-    if (
-      portalName === 'التاريخ والحضارة' ||
-      portalName === 'المحافظات والمعالم'
-    ) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-      challenge.hidden = false;
-      challenge.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-
-      const question = document.getElementById('historyQuestion');
-      const answers = document.getElementById('historyAnswers');
-
-      if (portalName === 'التاريخ والحضارة') {
-        if (question) {
-          question.textContent = 'ما اسم الحصن التاريخي الشهير في ولاية نزوى؟';
-        }
-
-        if (answers) {
-          answers.hidden = false;
-          answers.replaceChildren();
-
-          ['حصن نزوى', 'قلعة بهلاء', 'حصن جبرين'].forEach((answer, index) => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.textContent = answer;
-
-            button.addEventListener('click', () => {
-              if (answers.dataset.answered === 'true') return;
-              answers.dataset.answered = 'true';
-
-              const feedback = document.getElementById('historyFeedback');
-              if (feedback) {
-                feedback.textContent = index === 0
-                  ? 'إجابة صحيحة! حصن نزوى من أبرز المعالم التاريخية.'
-                  : 'الإجابة الصحيحة هي حصن نزوى.';
-              }
-            });
-
-            answers.appendChild(button);
-          });
-        }
-      }
-    }
-  }, true);
 })();
