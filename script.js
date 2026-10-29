@@ -62,12 +62,13 @@ function updatePoints() {
 }
 
 function updateProgress() {
-const completed = state.index + (state.answered ? 1 : 0);
-const percent = (completed / questions.length) * 100;
-  $('progressBar').style.width = `${percent}%`;
-  $('progressText').textContent = `${arabicNumber(Math.round(percent))}٪`;
+  const completed = state.index + (state.answered ? 1 : 0);
+  const percent = (completed / questions.length) * 100;
 
-  // يتحرك اللاعب من اليمين إلى اليسار مع تقدم السباق.
+  $('progressBar').style.width = `${percent}%`;
+  $('progressText').textContent =
+    `${arabicNumber(Math.round(percent))}٪`;
+
   $('racePlayer').style.right = `${percent}%`;
   $('racePlayer').style.transform = 'translateX(50%)';
   $('racePlayer').textContent = characterIcons[state.character];
